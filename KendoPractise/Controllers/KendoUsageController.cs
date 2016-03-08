@@ -5,7 +5,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Kendo.Mvc.UI;
 using KendoPractise.Models;
+using Kendo.Mvc.Extensions;
 
 namespace KendoPractise.Views.Kendo_Usage
 {
@@ -19,7 +21,7 @@ namespace KendoPractise.Views.Kendo_Usage
             return View();
         }
 
-        public JsonResult GetProducts(string text)
+        public JsonResult GetProductsForAutoComplete(string text)
         {
             var productList = GetProductList();
 
@@ -70,5 +72,13 @@ namespace KendoPractise.Views.Kendo_Usage
 
             return productCollection;
         }
+
+        public ActionResult GetProducts([DataSourceRequest]DataSourceRequest request, ProductModel product)
+        {
+            var productList = GetProductList();
+            return Json(productList.ToDataSourceResult(request));
+
+        }
+
     }
 }

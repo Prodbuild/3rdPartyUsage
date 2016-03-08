@@ -5,10 +5,6 @@
     <link rel="stylesheet" href="~/Content/Kendo/kendo.common.min.css" />
     <link rel="stylesheet" href="~/Content/Kendo/kendo.default.min.css" />
 }
-@section Scripts {
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryval")
-}
 @section KendoJs{
     <script src="~/Scripts/Kendo/kendo.all.min.js"></script>
     <script src="~/Scripts/Kendo/kendo.aspnetmvc.min.js"></script>
@@ -18,48 +14,41 @@
 
 <h3>Kendo AutoComplete</h3>
 
-Product Name : @(Html.Kendo().AutoComplete()
-          .Name("products")
-          .DataTextField("ProductName")
-          .HtmlAttributes(new { style = "width:100%" })
-          .DataSource(source =>
-          {
-              source.Read(read =>
-              {
-                  read.Action("GetProducts", "KendoUsage")
-                      .Data("onAdditionalData");
-              })
-              .ServerFiltering(true);
-          }))
+@*Product Name : @(Html.Kendo().AutoComplete()
+    .Name("products")
+    .DataTextField("ProductName")
+    .HtmlAttributes(new { style = "width:100%" })
+    .DataSource(source =>
+    {
+        source.Read(read =>
+        {
+            read.Action("GetProductsForAutoComplete", "KendoUsage")
+                .Data("onAdditionalData");
+        })
+        .ServerFiltering(true);
+    }))*@
 
+@Html.Partial("_Product");
+
+<input type="button" value="Click" id="submit" />
 
 <h3>Kendo Grid Filtration</h3>
 @(Html.Kendo().Grid<KendoPractise.Models.ProductModel>()
     .Name("grid")
     .Columns(columns =>
     {
-        columns.Bound(p => p.ProductId).Filterable(
-                        ftb => ftb.Cell(cell => cell.ShowOperators(false))).Width(225);
-        columns.Bound(p => p.ProductName).Width(500).Filterable(
-                        ftb => ftb.Cell(cell => cell.Operator("contains").ShowOperators(false)));
+        columns.Bound(p => p.ProductId);
+        columns.Bound(p => p.ProductName);
     })
     .Pageable()
     .Sortable()
     .Scrollable()
-    .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
     .HtmlAttributes(new { style = "height:550px;" })
     .DataSource(dataSource => dataSource
         .Ajax()
         .PageSize(20)
-        .Read(read => read.Action("GetProducts", "KendoUsage"))
+                .Read(read => read.Action("GetProducts", "KendoUsage").Data("moreData"))
      )
 )
 
-
-<script type="text/javascript">
-    function onAdditionalData() {
-        return {
-            text: $("#products").val()
-        };
-    }
-</script>
+<script src="~/Scripts/Custom/index.js"></script>

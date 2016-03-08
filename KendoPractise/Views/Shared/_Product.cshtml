@@ -1,0 +1,8 @@
+﻿@model KendoPractise.Models.ProductModel
+
+@using (Html.BeginForm("", "", FormMethod.Post, new { id = "sampleForm" }))
+{
+    <label>ProductId:</label> @Html.TextBoxFor(m => m.ProductId);
+    <label>ProductName:</label> @Html.TextBoxFor(m => m.ProductName)
+
+}
